@@ -13,7 +13,7 @@ class CampoBatalla():
     def obtenerTamanoCuadricula(self):
         return self.tamanoCuadricula
 
-    def establecerCantidadMinas(self):
+    def establecerMinasManualmente(self):
         opcionInvalida = True
 
         while opcionInvalida:
@@ -24,23 +24,26 @@ class CampoBatalla():
             else:
                 print('La cantidad de minas no puede superar el tamaño de la cuadricula')
         
-    def establecerCantidadMinasAleatoria(self, multiplicador):
+    def establecerMinasAleatorias(self, multiplicador):
         self.cantidadMinas = random.randint(1, int((self.tamanoCuadricula**2) - self.tamanoCuadricula * multiplicador))
         print(f'Minas generadas: {self.obtenerCantidadMinas()}\n')
-        # print(f'\nMinas minimas: 1\nMinas maximas: {int((self.tamanoCuadricula**2) - self.tamanoCuadricula*0.10)}\nMinas generadas: {self.cantidadMinas}\n')
 
     def obtenerCantidadMinas(self):
         return self.cantidadMinas
+    
+    def establecerCantidadMinas(self, cantidadMinas):
+        self.cantidadMinas = cantidadMinas
     
     def obtenerUbicacionMinas(self):
         return self.listaMinas
 
 
     def plantarMinas(self):
-        while self.cantidadMinas > 0:
-            coordenadaX = random.randint(0, self.tamanoCuadricula - 1)
-            coordenadaY = random.randint(0, self.tamanoCuadricula - 1)
+        cantidadMinas = self.cantidadMinas
+        while cantidadMinas > 0:
+            coordenadaX = random.randint(1, self.tamanoCuadricula)
+            coordenadaY = random.randint(1, self.tamanoCuadricula)
 
             if [coordenadaX, coordenadaY] not in self.listaMinas:
                 self.listaMinas.append([coordenadaX, coordenadaY])
-                self.cantidadMinas -= 1
+                cantidadMinas -= 1

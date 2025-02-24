@@ -23,6 +23,9 @@ class Jugador():
     def obtenerOportunidades(self):
         return self.oportunidades
     
+    def incrementarOportunidad(self):
+        self.oportunidades += 1
+
     def decrementarOportunidad(self):
         self.oportunidades -= 1
 
@@ -52,12 +55,9 @@ class Jugador():
         self.historialX.clear
         self.historialY.clear
 
-    def mostrarRegistros(self):
-        i = 0
-
-        while i < self.cantidadIntentos:
-            print(f'Se disparo a las coordenadas {self.historialX[i]}, {self.historialY[i]} en el turno #{i}\n')
-            i += 1
+    def obtenerRegistros(self):
+        for i in range(len(self.historialX)):
+            print(f'Se disparo a las coordenadas [{self.historialX[i]}, {self.historialY[i]}] en el turno #{i + 1}')
 
     def disparar(self, campoBatalla, coordenadaX, coordenadaY):    
         coordenadaX, coordenadaY = int(coordenadaX), int(coordenadaY)
@@ -69,7 +69,8 @@ class Jugador():
             if [coordenadaX, coordenadaY] in listaMinas:
                 self.minasEncontradas.append([coordenadaX, coordenadaY])
                 self.incrementarPuntaje()
-                print(f'¡¡Acertaste y ganas un punto!!\nEl nuevo puntaje es: {self.obtenerPuntaje()}\n')
+                self.incrementarOportunidad()
+                print(f'¡¡Acertaste!! Ganas un punto y una oportunidad!!\nEl nuevo puntaje es: {self.obtenerPuntaje()}\n')
             else:
                 print('¡¡Fallaste el disparo!! Pierdes una oportunidad\n')
                 self.decrementarOportunidad()
@@ -80,5 +81,5 @@ class Jugador():
     def reiniciarEstadisticas(self):
         self.establecerPuntaje(0)
         self.establecerTurno(1)
-        self.establecerCantidadIntentos(1)
+        self.establecerOportunidades(1)
         self.eliminarRegistros()

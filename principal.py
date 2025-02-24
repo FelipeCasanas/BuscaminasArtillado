@@ -1,7 +1,7 @@
 from generador import CampoBatalla
 from jugador import Jugador
 
-print('\nBienvenido a Buscaminas!!')
+print('\nBienvenido a Buscaminas Artillado!!')
 
 campoBatalla = None
 jugador = None
@@ -9,42 +9,47 @@ jugador = None
 def crearCampoBatalla():
     opcionInvalida = True
     tamanoCuadricula = int(input('\nQue tamaño va a tener la cuadricula del juego?: '))
-    campoBatalla = CampoBatalla(tamanoCuadricula, 0)
+    campoBatalla = CampoBatalla(tamanoCuadricula, 1)
 
     autoRellenarMinas = int(input('\nQuieres una cantidad de minas aleatoria?\n1. Si\n2. No\nEscribe aqui: '))
     
     while opcionInvalida:
         if autoRellenarMinas == 1:
-            campoBatalla.establecerCantidadMinasAleatoria(1)
+            campoBatalla.establecerMinasAleatorias(1)
             campoBatalla.plantarMinas()
             return campoBatalla
         elif autoRellenarMinas == 2:
-            campoBatalla.establecerCantidadMinas()
+            campoBatalla.establecerMinasManualmente()
             campoBatalla.plantarMinas()
             return campoBatalla
         else:
             print('La opcion no existe, vuelva a intentarlo')
 
 def crearJugador():
-    nombre = input('Escribe tu nombre: ')
+    nombre = input('Escribe tu apellido: ')
     print('Jugador creado!')
     return Jugador(nombre, 1, 1, 0)
 
 def comenzarJuego(jugador):
     jugar = True
     campoBatalla = crearCampoBatalla()
+    jugador.reiniciarEstadisticas()
 
-    oportunidades = int(input('Cuantos intentos quieres tener?: '))
+    oportunidades = int(input('Cuantas oportunidades quieres tener?: '))
     jugador.establecerOportunidades(oportunidades)
 
     while jugar:
+        if jugador.obtenerPuntaje() == campoBatalla.obtenerCantidadMinas():
+            print(f'Felicidades soldado {jugador.obtenerNombre()}! Destruiste todas las minas\nSeras ascendido a Cabo!!\n')
+            mostrarMenu(jugador)
+            break
+
         if jugador.obtenerOportunidades() > 1:
             print(f'\nTurno #{jugador.obtenerTurno()}\nOportunidades restantes: {jugador.obtenerOportunidades()}\n -> ¡Dispara!')    
         elif jugador.obtenerOportunidades() == 1:
             print(f'\nTurno #{jugador.obtenerTurno()}\nOportunidades restantes: {jugador.obtenerOportunidades()}\n -> ¡Es tu ultima oportunidad, no puedes fallar!')
         else:
             print(f'Perdiste el juego {jugador.obtenerNombre()}!! Seras retirado del servicio activo GRANUJA >:(')
-            jugador.reiniciarEstadisticas()
             mostrarMenu(jugador)
             break
 
@@ -58,9 +63,9 @@ def mostrarMenu(jugador):
     
     while opcionInvalida:
         if jugador != None:
-            mensaje = f'\nQue opcion vas a escoger {jugador.obtenerNombre()}?:\n1. Jugar \n2. Crear jugador \n3. Creditos \n4. Salir\nEscribe aqui: '
+            mensaje = f'\nQue opcion vas a escoger {jugador.obtenerNombre()}?:\n1. Jugar \n2. Crear jugador\n3. Estadisticas partida anterior \n4. Creditos \n5. Salir\nEscribe aqui: '
         else:
-            mensaje = '\nEscoge lo que quieres hacer:\n1. Jugar \n2. Crear jugador \n3. Creditos \n4. Salir\nEscribe aqui: '
+            mensaje = '\nEscoge lo que quieres hacer:\n1. Jugar \n2. Crear jugador\n3. Estadisticas partida anterior \n4. Creditos \n5. Salir\nEscribe aqui: '
         
         accion = int(input(mensaje))
 
@@ -76,8 +81,15 @@ def mostrarMenu(jugador):
             else:
                 jugador = crearJugador()
         elif accion == 3:
-            print('\nBuscaminas Artillado\nCreador: Felipe Casañas - ADSO 07\nCasanas Software - 2025\n')
+            if jugador != None:
+                print(f'\nEstadisticas partida:\nTurno alcanzado: {jugador.obtenerTurno() - 1}\nPuntaje alcanzado: {jugador.obtenerPuntaje()}\n\nRegistro de tus disparos:')
+                jugador.obtenerRegistros()
+            else:
+                print('Aun no existen estadisticas, vuelve despues de jugar una partida ;)\n')
+            
         elif accion == 4:
+            print('\nBuscaminas Artillado\nCreador: Felipe Casañas - ADSO 07\nCasanas Software - 2025\n')
+        elif accion == 5:
             exit(0)
         else:
             opcionInvalida = True
