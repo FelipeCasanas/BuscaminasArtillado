@@ -7,12 +7,6 @@ class CampoBatalla():
         self.cantidadMinas = cantidadMinas
         self.listaMinas = []
 
-    def establecerTamano(self, tamano):
-        self.tamanoCuadricula = tamano
-
-    def obtenerTamanoCuadricula(self):
-        return self.tamanoCuadricula
-
     def establecerMinasManualmente(self):
         opcionInvalida = True
 
@@ -28,15 +22,20 @@ class CampoBatalla():
         self.cantidadMinas = random.randint(1, int((self.tamanoCuadricula**2) - self.tamanoCuadricula * multiplicador))
         print(f'Minas generadas: {self.obtenerCantidadMinas()}\n')
 
-    def obtenerCantidadMinas(self):
-        return self.cantidadMinas
-    
-    def establecerCantidadMinas(self, cantidadMinas):
-        self.cantidadMinas = cantidadMinas
-    
-    def obtenerUbicacionMinas(self):
-        return self.listaMinas
-
+    def enRango(campoBatalla, coordenadaX, coordenadaY):
+        enRango = True
+        if coordenadaX > campoBatalla.obtenerTamanoCuadricula() and coordenadaY > campoBatalla.obtenerTamanoCuadricula():
+            print(f'La coordenada "X" e "Y" estan fuera del rango del tablero [{coordenadaX}, {coordenadaY}]')
+            enRango = False
+            return enRango
+        elif coordenadaX > campoBatalla.obtenerTamanoCuadricula():
+            print(f'La coordenada "X" esta fuera del rango del tablero [{coordenadaX}]')
+            enRango = False
+            return enRango
+        elif coordenadaY > campoBatalla.obtenerTamanoCuadricula():
+            print(f'La coordenada "Y" esta fuera del rango del tablero [{coordenadaY}]')
+            enRango = False
+            return enRango
 
     def plantarMinas(self):
         cantidadMinas = self.cantidadMinas
@@ -47,3 +46,18 @@ class CampoBatalla():
             if [coordenadaX, coordenadaY] not in self.listaMinas:
                 self.listaMinas.append([coordenadaX, coordenadaY])
                 cantidadMinas -= 1
+
+    def establecerTamano(self, tamano):
+        self.tamanoCuadricula = tamano
+
+    def obtenerTamanoCuadricula(self):
+        return self.tamanoCuadricula
+    
+    def obtenerCantidadMinas(self):
+        return self.cantidadMinas
+    
+    def establecerCantidadMinas(self, cantidadMinas):
+        self.cantidadMinas = cantidadMinas
+    
+    def obtenerUbicacionMinas(self):
+        return self.listaMinas
