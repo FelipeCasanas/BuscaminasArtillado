@@ -19,7 +19,7 @@ class Jugador():
         coordenadaX, coordenadaY = int(coordenadaX), int(coordenadaY)
         listaMinas = [[int(x), int(y)] for x, y in campoBatalla.obtenerUbicacionMinas()]
 
-        if campoBatalla.enRango(campoBatalla, coordenadaX, coordenadaY):
+        if campoBatalla.enRango(coordenadaX, coordenadaY):
             if [coordenadaX, coordenadaY] in self.minasEncontradas:
                 print(f'La mina [{coordenadaX}, {coordenadaY}] ya fue encontrada\n')
             else:
@@ -39,6 +39,8 @@ class Jugador():
 
             self.agregarRegistro(coordenadaX, coordenadaY)
             self.turno += 1
+        else:
+            print('Disparaste fuera del rango')
 
     def obtenerDistanciaObjetivo(self, campoBatalla, coordenadaX, coordenadaY):
         '''

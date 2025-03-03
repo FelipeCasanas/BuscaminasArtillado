@@ -22,20 +22,22 @@ class CampoBatalla():
         self.cantidadMinas = random.randint(1, int((self.tamanoCuadricula**2) - self.tamanoCuadricula * multiplicador))
         print(f'Minas generadas: {self.obtenerCantidadMinas()}\n')
 
-    def enRango(campoBatalla, coordenadaX, coordenadaY):
+    def enRango(self, coordenadaX, coordenadaY):
         enRango = True
-        if coordenadaX > campoBatalla.obtenerTamanoCuadricula() and coordenadaY > campoBatalla.obtenerTamanoCuadricula():
+        if coordenadaX > self.obtenerTamanoCuadricula() and coordenadaY > self.obtenerTamanoCuadricula():
             print(f'La coordenada "X" e "Y" estan fuera del rango del tablero [{coordenadaX}, {coordenadaY}]')
             enRango = False
             return enRango
-        elif coordenadaX > campoBatalla.obtenerTamanoCuadricula():
+        elif coordenadaX > self.obtenerTamanoCuadricula():
             print(f'La coordenada "X" esta fuera del rango del tablero [{coordenadaX}]')
             enRango = False
             return enRango
-        elif coordenadaY > campoBatalla.obtenerTamanoCuadricula():
+        elif coordenadaY > self.obtenerTamanoCuadricula():
             print(f'La coordenada "Y" esta fuera del rango del tablero [{coordenadaY}]')
             enRango = False
             return enRango
+        
+        return enRango
 
     def plantarMinas(self):
         cantidadMinas = self.cantidadMinas
